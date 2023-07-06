@@ -28,6 +28,7 @@ body {
 .discount {
   font-size: 24pt;
   font-weight: bold;
+  margin-top: 27%;
 }
 
 .normal-text {
@@ -48,83 +49,79 @@ body {
   text-align: center;
   font-size: 10pt;
   font-weight: bold;
+  margin-bottom: 20%;
 }
 
 .price-value {
   font-size: 18pt;
 }
 
+.column {
+  text-align: center;
+  display: inline-block;
+  width: 50%;
+  box-sizing: border-box;
+  padding: 10px;
+}
 </style>
 </head>
 <body>
-  <!-- First sign -->
-  <div class="sign">
-    <p class="discount" style="color:red;"><span id="discountValue1"></span> OFF</p>
-  </div>
-
-  <div class="normal-text">
-    <p class="highlight" id="productLine11"></p>
-    <p class="highlight"><span id="productLine12"></span></p>
-    <p class="secondary price-value"><span id="priceValue1"></span>+tax &amp; deposit</p>
-  </div>
-
-  <div class="valid-date">
-    <p>Valid <span id="validFrom1"></span> thru <span id="validTo1"></span></p>
-  </div>
-
-  <!-- Second sign -->
-  <div class="sign">
-    <p class="discount" style="color:red;"><span id="discountValue2"></span> OFF</p>
-  </div>
-
-  <div class="normal-text">
-    <p class="highlight" id="productLine21"></p>
-    <p class="highlight"><span id="productLine22"></span></p>
-    <p class="secondary price-value"><span id="priceValue2"></span>+tax &amp; deposit</p>
-  </div>
-
-  <div class="valid-date">
-    <p>Valid <span id="validFrom2"></span> thru <span id="validTo2"></span></p>
-  </div>
-
+  <div id="signageContainer"></div>
+  <script src="signageData.js"></script>
 <script>
-  // Sign 1
-  var discountValue1 = "$4.50";
-  var productName1 = "CORONA 12 BOTTLES";
-  var priceValue1 = "$27.49";
-  var validFrom1 = "July 3";
-  var validTo1 = "July 30, 2023";
+  // Create the signage blocks dynamically
+  var signageRow = document.getElementById("signageContainer");
+  for (var i = 0; i < signageData.length; i++) {
+    var signage = signageData[i];
 
-  var wrapLimit1 = 10;
-  var productLine11 = productName1.substr(0, wrapLimit1);
-  var productLine12 = productName1.substr(wrapLimit1);
+    var column = document.createElement("div");
+    column.className = "column";
 
-  document.getElementById("discountValue1").textContent = discountValue1;
-  document.getElementById("productLine11").textContent = productLine11;
-  document.getElementById("productLine12").textContent = productLine12;
-  document.getElementById("priceValue1").textContent = priceValue1;
-  document.getElementById("validFrom1").textContent = validFrom1;
-  document.getElementById("validTo1").textContent = validTo1;
+    var signDiv = document.createElement("div");
+    signDiv.className = "sign";
 
-  // Sign 2
-  var discountValue2 = "$2.00";
-  var productName2 = "HEINEKEN 6-PACK";
-  var priceValue2 = "$12.99";
-  var validFrom2 = "July 1";
-  var validTo2 = "July 31, 2023";
+    var discountParagraph = document.createElement("p");
+    discountParagraph.className = "discount";
+    discountParagraph.innerHTML = "<span class='discountValue'>" + signage.discountValue + "</span> OFF";
 
-  var wrapLimit2 = 9;
-  var productLine21 = productName2.substr(0, wrapLimit2);
-  var productLine22 = productName2.substr(wrapLimit2);
+    signDiv.appendChild(discountParagraph);
 
-  document.getElementById("discountValue2").textContent = discountValue2;
-  document.getElementById("productLine21").textContent = productLine21;
-  document.getElementById("productLine22").textContent = productLine22;
-  document.getElementById("priceValue2").textContent = priceValue2;
-  document.getElementById("validFrom2").textContent = validFrom2;
-  document.getElementById("validTo2").textContent = validTo2;
+    var normalTextDiv = document.createElement("div");
+    normalTextDiv.className = "normal-text";
+
+    var productLine1Paragraph = document.createElement("p");
+    productLine1Paragraph.className = "highlight productLine1";
+    productLine1Paragraph.textContent = signage.productName.substr(0, 10);
+
+    var productLine2Paragraph = document.createElement("p");
+    productLine2Paragraph.className = "highlight productLine2";
+    productLine2Paragraph.textContent = signage.productName.substr(10);
+
+    var priceParagraph = document.createElement("p");
+    priceParagraph.className = "secondary price-value priceValue";
+    priceParagraph.textContent = signage.priceValue;
+
+    normalTextDiv.appendChild(productLine1Paragraph);
+    normalTextDiv.appendChild(productLine2Paragraph);
+    normalTextDiv.appendChild(priceParagraph);
+
+    var validDateDiv = document.createElement("div");
+    validDateDiv.className = "valid-date";
+
+    var validDateParagraph = document.createElement("p");
+    validDateParagraph.innerHTML = "Valid <span class='validFrom'>" + signage.validFrom + "</span> thru <span class='validTo'>" + signage.validTo + "</span>";
+
+    validDateDiv.appendChild(validDateParagraph);
+
+    // Append the elements to the column
+    column.appendChild(signDiv);
+    column.appendChild(normalTextDiv);
+    column.appendChild(validDateDiv);
+
+    // Append the column to the signage row
+    signageRow.appendChild(column);
+  }
 </script>
 
 </body>
 </html>
-

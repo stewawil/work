@@ -1,0 +1,38 @@
+function readFile(file) {
+    return new Promise(function(resolve, reject) {
+      var reader = new FileReader();
+      
+      reader.onload = function(e) {
+        var contents = e.target.result;
+        resolve(contents);
+      };
+  
+      reader.onerror = function() {
+        reject(new Error("Error reading file"));
+      };
+  
+      reader.readAsText(file);
+    });
+  }
+  
+  function parseSignageData(contents) {
+    var lines = contents.split("\n");
+    var signageData = [];
+  
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (line !== "") {
+        var fields = line.split("\t");
+        var signage = {
+          discountValue: fields[0],
+          productName: fields[1],
+          priceValue: fields[2],
+          validFrom: fields[3],
+          validTo: fields[4]
+        };
+        signageData.push(signage);
+      }
+    }
+  
+    return signageData;
+  }
